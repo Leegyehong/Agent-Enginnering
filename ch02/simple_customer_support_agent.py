@@ -7,7 +7,6 @@ from langgraph.graph import StateGraph
 
 # 환경변수 확인
 import os
-print("실행은 됐다네1")
 try:
     from dotenv import load_dotenv
     load_dotenv()
@@ -54,17 +53,29 @@ def call_model(state):
 
     # 1차 LLM 패스: 도구 호출 여부 결정
     first = llm_with_tools.invoke(full)
+    # print("-------")
+    # print(f"first : {first}")
+    # print("-------")
     out = [first]
+    # print(out)
 
     if getattr(first, "tool_calls", None):
         # cancel_order 도구 실행
         tc = first.tool_calls[0]
         result = cancel_order.invoke(tc["args"])
+        # print("-------")
+        # print(f"result : {result}")
+        # print("-------")
         out.append(ToolMessage(content=result, tool_call_id=tc["id"]))
+        # print(f"out_1:  {out}")
 
         # 2차 LLM 패스: 최종 확인 텍스트 생성
         second = llm.invoke(full + out)
+        # print("-------")
+        # print(f"second : {second}")
+        # print("-------")
         out.append(second)
+        # print(f"out_2:  {out}")
 
     return {"messages": out}
 
@@ -78,9 +89,8 @@ def construct_graph():
 graph = construct_graph()
 
 if __name__ == "__main__":
-    print("실행은 됐다네2")
     example_order = {"order_id": "B73973"}
-    convo = [HumanMessage(content="주문 #B73973를 취소해주세요.")]
+    convo = [HumanMessage(content="주문 #B73973를 취소해주세요.ㅋㅋ")]
     result = graph.invoke({"order": example_order, "messages": convo})
     for msg in result["messages"]:
         print(f"{msg.type}: {msg.content}")

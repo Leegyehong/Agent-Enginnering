@@ -5,6 +5,7 @@ services:
     # 현재 폴더(.)를 컨테이너의 /app 폴더와 실시간 동기화
     volumes:
       - .:/app
+      - /app/.venv
     # .env 파일에 적힌 API KEY 등을 자동 로드
     env_file:
       - .env
