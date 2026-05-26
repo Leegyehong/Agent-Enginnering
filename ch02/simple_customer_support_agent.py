@@ -16,7 +16,7 @@ except ImportError:
 if not os.getenv("OPENAI_API_KEY"):
     raise ValueError(
         "OPENAI_API_KEY가 설정되지 않았습니다."
-        "환경변수 또는 .env 파일에서 설정해주세요."
+        "환경변수 또는 .env 파일에서 설정해주세요..."
     )
 
 # State 타입 정의
